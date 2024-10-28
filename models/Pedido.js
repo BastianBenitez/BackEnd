@@ -1,21 +1,38 @@
+// models/Pedido.js
 const mongoose = require("mongoose");
 
-const PedidoSchema = new mongoose.Schema({
-  pedido_id: { type: String, required: true },
-  fecha: { type: Date, required: true },
-  cliente: { type: String },
-  productos: [
+const pedidoSchema = new mongoose.Schema({
+  sushis: [
     {
-      producto_id: String,
-      cantidad: Number,
-      valor_unitario: Number,
-      subtotal: Number,
+      sushi: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Sushi", // Referencia al modelo Sushi
+        required: true,
+      },
+      cantidad: {
+        type: Number,
+        required: true,
+      },
     },
   ],
-  estado: { type: String, required: true }, // "En preparación", "Listo", "Entregado"
-  tipo_entrega: { type: String, required: true }, // "para llevar" o "delivery"
-  costo_envio: { type: Number, default: 0 },
-  total: { type: Number, required: true },
+  total: {
+    type: Number,
+    required: true,
+  },
+  cliente: {
+    type: String,
+    required: true,
+  },
+  estado: {
+    type: String,
+    enum: ["pendiente", "en proceso", "completado", "cancelado"],
+    default: "pendiente",
+  },
+  fecha: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
-module.exports = mongoose.model("Pedido", PedidoSchema);
+const Pedido = mongoose.model("Pedido", pedidoSchema);
+module.exports = Pedido;

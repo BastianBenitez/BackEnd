@@ -1,15 +1,55 @@
+// models/Usuario.js
 const mongoose = require("mongoose");
 
-const UsuarioSchema = new mongoose.Schema({
-  usuario_id: { type: String, required: true },
-  nombre: { type: String, required: true },
-  apellido: { type: String, required: true },
-  correo: { type: String, required: true },
-  telefono: { type: String },
-  direccion: { type: String },
-  rol: { type: String, required: true }, // "dueño", "administrador", "cajero", "cliente", "encargado despachos"
-  estado: { type: String, required: true }, // "activo" o "inactivo"
-  actividades_autorizadas: [{ type: String }],
-});
+const usuarioSchema = new mongoose.Schema(
+  {
+    nombre: {
+      type: String,
+      required: true,
+    },
+    apellido: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    telefono: {
+      type: String,
+      required: true,
+    },
+    direccion: {
+      type: String,
+      required: true,
+    },
+    contrasena: {
+      type: String,
+      required: true,
+    },
+    fechaRegistro: {
+      type: Date,
+      default: Date.now,
+    },
+    isAdmin: {
+      type: Boolean,
+      default: false, // Indica si el usuario tiene privilegios de administrador
+    },
+    historialPedidos: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Pedido", // Referencia al modelo Pedido
+      },
+    ],
+  },
+  {
+    timestamps: true, // Añade createdAt y updatedAt
+  }
+);
 
-module.exports = mongoose.model("Usuario", UsuarioSchema);
+// Crea un índice para asegurar que el email sea único
+usuarioSchema.index({ email: 1 });
+
+const Usuario = mongoose.model("Usuario", usuarioSchema);
+module.exports = Usuario;

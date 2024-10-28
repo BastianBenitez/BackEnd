@@ -1,12 +1,36 @@
 const mongoose = require("mongoose");
 
-const EntregaSchema = new mongoose.Schema({
-  entrega_id: { type: String, required: true },
-  pedido_id: { type: String, required: true },
-  fecha: { type: Date, required: true },
-  repartidor: { type: String, required: true },
-  estado_entrega: { type: String, required: true }, // "En camino", "Entregado"
-  costo_entrega: { type: Number },
-});
+const EntregaSchema = new mongoose.Schema(
+  {
+    pedido_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Pedido",
+      required: true,
+    },
+    fecha: {
+      type: Date,
+      required: true,
+      default: Date.now,
+    },
+    repartidor: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Usuario",
+      required: true,
+    },
+    estado_entrega: {
+      type: String,
+      required: true,
+      enum: ["En camino", "Entregado", "Cancelado"],
+    },
+    costo_entrega: {
+      type: Number,
+      required: true,
+      min: 0,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
 
 module.exports = mongoose.model("Entrega", EntregaSchema);

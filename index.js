@@ -1,3 +1,4 @@
+// index.js
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -26,16 +27,14 @@ mongoose
 // Importacion de modelos
 const Venta = require("./models/Venta");
 const Pedido = require("./models/Pedido");
-const ReporteVentas = require("./models/ReporteVentas");
-const Usuario = require("./models/Usuario");
-const Menu = require("./models/Menu");
-const Entrega = require("./models/Entrega");
-const OrdenDespacho = require("./models/OrdenDespacho");
-const Historial = require("./models/Historial");
 
-app.get("/", (req, res) => {
-  res.send("Bienvenido al API de Fukusuke");
-});
+// Importación de rutas
+const ventasRoutes = require("./routes/ventas");
+const pedidosRoutes = require("./routes/pedidos");
+
+// Usar rutas
+app.use("/api/ventas", ventasRoutes);
+app.use("/api/pedidos", pedidosRoutes);
 
 // Iniciar servidor
 app.listen(PORT, () => {

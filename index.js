@@ -29,12 +29,10 @@ const Venta = require("./models/Venta");
 const Pedido = require("./models/Pedido");
 
 // Importación de rutas
-const ventasRoutes = require("./routes/ventas");
-const pedidosRoutes = require("./routes/pedidos");
+const SushiRoutes = require("./routes/SushiRoutes");
 
 // Usar rutas
-app.use("/api/ventas", ventasRoutes);
-app.use("/api/pedidos", pedidosRoutes);
+app.use("/api", SushiRoutes);
 
 // Iniciar servidor
 app.listen(PORT, () => {

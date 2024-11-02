@@ -31,10 +31,12 @@ const Pedido = require("./models/Pedido");
 // Importación de rutas
 const SushiRoutes = require("./routes/SushiRoutes");
 const UsuarioRoutes = require("./routes/UsuarioRoutes");
+const authRoutes = require("./routes/authRoutes");
 
 // Usar rutas
 app.use("/api", SushiRoutes);
 app.use("/api", UsuarioRoutes);
+app.use("/api/auth", authRoutes);
 
 // Iniciar servidor
 app.listen(PORT, () => {

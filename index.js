@@ -12,7 +12,12 @@ const PORT = process.env.PORT || 3000;
 const MONGO_URI = process.env.MONGO_URI;
 
 // Middleware
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Cambia esto a tu frontend
+    credentials: true, // Permite el uso de cookies
+  })
+);
 app.use(bodyParser.json());
 app.use(cookieParser());
 mongoose.set("strictQuery", true);

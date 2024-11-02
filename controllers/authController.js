@@ -52,9 +52,8 @@ const loginUser = async (req, res) => {
 
   // Establecer el token en una cookie
   res.cookie("token", token, {
-    httpOnly: true, // Solo accesible desde el servidor
+    maxAge: 3600000, // 1 horars
     secure: process.env.NODE_ENV === "production", // Solo enviar en HTTPS en producción
-    maxAge: 3600000, // 1 hora
   });
 
   res.json({ message: "Inicio de sesión exitoso" });

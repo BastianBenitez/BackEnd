@@ -13,6 +13,7 @@ const MONGO_URI = process.env.MONGO_URI;
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
+app.use(cookieParser());
 mongoose.set("strictQuery", true);
 
 // Conexion a MongoDB

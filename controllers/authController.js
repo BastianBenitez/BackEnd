@@ -31,7 +31,6 @@ const registerUser = async (req, res) => {
   res.status(201).json({ message: "Usuario creado exitosamente" });
 };
 
-// Autenticación de usuario
 const loginUser = async (req, res) => {
   const { email, contrasena } = req.body;
 
@@ -50,13 +49,17 @@ const loginUser = async (req, res) => {
     expiresIn: "1h",
   });
 
-  // Establecer el token en una cookie
-  res.cookie("token", token, {
-    maxAge: 3600000, // 1 horars
-    secure: process.env.NODE_ENV === "production", // Solo enviar en HTTPS en producción
+  // Responder con el token y los datos del usuario
+  res.json({
+    message: "Inicio de sesión exitoso",
+    token, // Envía el token en el cuerpo de la respuesta
+    user: {
+      id: user._id,
+      email: user.email,
+      nombre: user.nombre,
+      // Agrega cualquier otro dato necesario
+    },
   });
-
-  res.json({ message: "Inicio de sesión exitoso" });
 };
 
 module.exports = {

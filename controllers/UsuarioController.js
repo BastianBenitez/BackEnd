@@ -12,6 +12,7 @@ const getUsers = async (req, res) => {
         createdAt,
         updatedAt,
         historialPedidos,
+        fechaRegistro,
         ...userWithoutSensitiveData
       } = user.toObject(); // Elimina los campos no deseados
       return userWithoutSensitiveData;

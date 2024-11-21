@@ -42,7 +42,7 @@ const authRoutes = require("./routes/authRoutes");
 
 // Usar rutas
 app.use("/api", SushiRoutes);
-app.use("/api", UsuarioRoutes);
+app.use("/api/users", UsuarioRoutes);
 app.use("/api/auth", authRoutes);
 
 // Iniciar servidor

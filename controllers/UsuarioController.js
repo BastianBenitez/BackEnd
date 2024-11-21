@@ -4,7 +4,20 @@ const User = require("../models/Usuario"); // Asegúrate de importar el modelo
 const getUsers = async (req, res) => {
   try {
     const users = await User.find(); // Obtener todos los usuarios de la base de datos
-    res.json(users);
+
+    // Eliminar los campos sensibles o innecesarios
+    const usersWithoutSensitiveData = users.map((user) => {
+      const {
+        contrasena,
+        createdAt,
+        updatedAt,
+        historialPedidos,
+        ...userWithoutSensitiveData
+      } = user.toObject(); // Elimina los campos no deseados
+      return userWithoutSensitiveData;
+    });
+
+    res.json(usersWithoutSensitiveData);
   } catch (error) {
     res.status(500).json({ message: "Error al obtener usuarios" });
   }

@@ -15,12 +15,8 @@ const sushiSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    imagen: {
+    url: {
       type: String, // URL de la imagen del sushi
-      required: true,
-    },
-    ingredientes: {
-      type: [String], // Lista de ingredientes
       required: true,
     },
     disponible: {

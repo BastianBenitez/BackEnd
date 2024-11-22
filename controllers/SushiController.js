@@ -4,15 +4,14 @@ const Sushi = require("../models/Sushi");
 // Crear un nuevo sushi
 exports.crearSushi = async (req, res) => {
   try {
-    const { nombre, descripcion, precio, imagen, ingredientes, disponible } =
-      req.body;
+    const { nombre, descripcion, precio, url, disponible } = req.body;
 
     const nuevoSushi = new Sushi({
       nombre,
       descripcion,
       precio,
-      imagen,
-      ingredientes,
+      url,
+
       disponible,
     });
 

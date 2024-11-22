@@ -39,10 +39,12 @@ const Pedido = require("./models/Pedido");
 const SushiRoutes = require("./routes/SushiRoutes");
 const UsuarioRoutes = require("./routes/UsuarioRoutes");
 const authRoutes = require("./routes/authRoutes");
+const PedidoRoutes = require("./routes/PedidoRoutes");
 
 // Usar rutas
 app.use("/api", SushiRoutes);
 app.use("/api/users", UsuarioRoutes);
+app.use("/api/pedido", PedidoRoutes);
 app.use("/api/auth", authRoutes);
 
 // Iniciar servidor

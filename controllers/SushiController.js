@@ -48,11 +48,10 @@ exports.obtenerSushiPorId = async (req, res) => {
 // Actualizar un sushi por ID
 exports.actualizarSushi = async (req, res) => {
   try {
-    const { nombre, descripcion, precio, imagen, ingredientes, disponible } =
-      req.body;
+    const { nombre, descripcion, precio, url, disponible } = req.body;
     const sushiActualizado = await Sushi.findByIdAndUpdate(
       req.params.id,
-      { nombre, descripcion, precio, imagen, ingredientes, disponible },
+      { nombre, descripcion, precio, url, ingreientes, disponible },
       { new: true }
     );
 

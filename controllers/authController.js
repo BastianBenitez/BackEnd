@@ -24,6 +24,7 @@ const registerUser = async (req, res) => {
     direccion,
     contrasena: hashedPassword,
     isAdmin: false,
+    isowner: false,
   });
 
   await newUser.save();
@@ -45,9 +46,18 @@ const loginUser = async (req, res) => {
   }
 
   // Generar el token JWT
-  const token = jwt.sign({ id: user._id, email: user.email }, SECRET_KEY, {
-    expiresIn: "1h",
-  });
+  const token = jwt.sign(
+    {
+      id: user._id,
+      email: user.email,
+      isAdmin: user.isAdmin,
+      isOwner: user.isowner,
+    },
+    SECRET_KEY,
+    {
+      expiresIn: "1h",
+    }
+  );
 
   // Responder con el token y los datos del usuario
   res.json({
@@ -57,6 +67,9 @@ const loginUser = async (req, res) => {
       id: user._id,
       email: user.email,
       nombre: user.nombre,
+      isAdmin: user.isAdmin,
+      isOwner: user.isowner,
+
       // Agrega cualquier otro dato necesario
     },
   });

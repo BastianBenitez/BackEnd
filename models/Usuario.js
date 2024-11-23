@@ -36,6 +36,10 @@ const usuarioSchema = new mongoose.Schema(
       type: Boolean,
       default: false, // Indica si el usuario tiene privilegios de administrador
     },
+    isOwner: {
+      type: Boolean,
+      default: false, // Indica si el usuario tiene privilegios de administrador
+    },
     historialPedidos: [
       {
         type: mongoose.Schema.Types.ObjectId,

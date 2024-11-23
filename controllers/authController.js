@@ -51,7 +51,7 @@ const loginUser = async (req, res) => {
       id: user._id,
       email: user.email,
       isAdmin: user.isAdmin,
-      isOwner: user.isowner,
+      isOwner: user.isOwner,
     },
     SECRET_KEY,
     {
@@ -68,7 +68,7 @@ const loginUser = async (req, res) => {
       email: user.email,
       nombre: user.nombre,
       isAdmin: user.isAdmin,
-      isOwner: user.isowner,
+      isOwner: user.isOwner,
 
       // Agrega cualquier otro dato necesario
     },

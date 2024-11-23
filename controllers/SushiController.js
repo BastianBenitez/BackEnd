@@ -11,7 +11,6 @@ exports.crearSushi = async (req, res) => {
       descripcion,
       precio,
       url,
-
       disponible,
     });
 

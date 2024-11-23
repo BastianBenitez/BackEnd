@@ -69,19 +69,28 @@ const deleteUser = async (req, res) => {
 const switchRoleAdmin = async (req, res) => {
   try {
     const userId = req.params.id;
+    const { isAdmin } = req.body; // Recibir el valor de isAdmin desde el cuerpo de la solicitud
+
+    // Validar que el valor de isAdmin es un booleano
+    if (typeof isAdmin !== "boolean") {
+      return res
+        .status(400)
+        .json({ message: "isAdmin debe ser un valor booleano" });
+    }
+
     const user = await User.findById(userId);
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Toggle the isAdmin value
-    user.isAdmin = !user.isAdmin;
+    // Actualizar el valor de isAdmin con el valor recibido
+    user.isAdmin = isAdmin;
 
-    // Save the updated user
+    // Guardar el usuario actualizado
     await user.save();
 
-    const message = user.isAdmin
+    const message = isAdmin
       ? "Admin privileges granted"
       : "Admin privileges revoked";
     res.status(200).json({ message, user });

@@ -31,21 +31,19 @@ mongoose
   .then(() => console.log("Conexión exitosa a MongoDB Atlas"))
   .catch((error) => console.error("Error al conectar a MongoDB Atlas:", error));
 
-// Importacion de modelos
-const Venta = require("./models/Venta");
-const Pedido = require("./models/Pedido");
-
 // Importación de rutas
 const SushiRoutes = require("./routes/SushiRoutes");
 const UsuarioRoutes = require("./routes/UsuarioRoutes");
 const authRoutes = require("./routes/authRoutes");
 const PedidoRoutes = require("./routes/PedidoRoutes");
+const VentasRoutes = require("./routes/VentaRoutes");
 
 // Usar rutas
 app.use("/api", SushiRoutes);
 app.use("/api/users", UsuarioRoutes);
 app.use("/api/pedido", PedidoRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api", VentasRoutes);
 
 // Iniciar servidor
 app.listen(PORT, () => {

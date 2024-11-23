@@ -65,9 +65,37 @@ const deleteUser = async (req, res) => {
   }
 };
 
+// Controller to toggle admin privileges (switch between true/false)
+const switchRoleAdmin = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Toggle the isAdmin value
+    user.isAdmin = !user.isAdmin;
+
+    // Save the updated user
+    await user.save();
+
+    const message = user.isAdmin
+      ? "Admin privileges granted"
+      : "Admin privileges revoked";
+    res.status(200).json({ message, user });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error switching admin privileges", error });
+  }
+};
+
 module.exports = {
   getUsers,
   getUserById,
   updateUser,
   deleteUser,
+  switchRoleAdmin,
 };

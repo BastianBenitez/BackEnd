@@ -140,6 +140,40 @@ const cancelOrder = async (req, res) => {
   }
 };
 
+const getOrderDetails = async (req, res) => {
+  try {
+    // Supongamos que recibes el ID del pedido como parámetro
+    const pedidoId = req.params.id;
+
+    // Busca el pedido y utiliza populate para traer información del modelo Sushi
+    const pedido = await Pedido.findById(pedidoId).populate("sushis.sushi");
+
+    if (!pedido) {
+      return res.status(404).json({ error: "Pedido no encontrado" });
+    }
+
+    // Formatear los datos para la respuesta
+    const detalles = {
+      cliente: pedido.cliente,
+      estado: pedido.estado,
+      fecha: pedido.fecha.toLocaleString("es-ES", {
+        timeZone: "America/Santiago",
+      }), // Ajusta el formato y zona horaria
+      total: `$${pedido.total}`,
+      sushis: pedido.sushis.map((item) => ({
+        nombre: item.sushi.nombre,
+        cantidad: item.cantidad,
+      })),
+    };
+
+    // Responder con los detalles
+    return res.json(detalles);
+  } catch (error) {
+    console.error("Error al obtener el pedido:", error);
+    return res.status(500).json({ error: "Error interno del servidor" });
+  }
+};
+
 module.exports = {
   crearPedido,
   obtenerPedidos,
@@ -147,4 +181,5 @@ module.exports = {
   actualizarEstadoPedido,
   eliminarPedido,
   cancelOrder,
+  getOrderDetails,
 };

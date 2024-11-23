@@ -51,7 +51,7 @@ exports.actualizarSushi = async (req, res) => {
     const { nombre, descripcion, precio, url, disponible } = req.body;
     const sushiActualizado = await Sushi.findByIdAndUpdate(
       req.params.id,
-      { nombre, descripcion, precio, url, ingreientes, disponible },
+      { nombre, descripcion, precio, url, disponible },
       { new: true }
     );
 

@@ -116,10 +116,35 @@ const eliminarPedido = async (req, res) => {
   }
 };
 
+const cancelOrder = async (req, res) => {
+  try {
+    const { id } = req.params; // Get the ID from the URL parameters
+
+    // Find the order by its ID and update the status to "cancelled"
+    const order = await Pedido.findByIdAndUpdate(
+      id, // Order ID
+      { estado: "cancelado" }, // Update the status property
+      { new: true } // Return the updated document
+    );
+
+    // If the order is not found, return an error
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    // Respond with the updated order
+    return res.status(200).json(order);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Error cancelling the order" });
+  }
+};
+
 module.exports = {
   crearPedido,
   obtenerPedidos,
   obtenerPedidoPorId,
   actualizarEstadoPedido,
   eliminarPedido,
+  cancelOrder,
 };

@@ -7,5 +7,6 @@ router.get("/", pedidoController.obtenerPedidos);
 router.get("/:id", pedidoController.obtenerPedidoPorId);
 router.put("/:id", pedidoController.actualizarEstadoPedido);
 router.delete("/:id", pedidoController.eliminarPedido);
+router.put("/cancel/:id", pedidoController.cancelOrder);
 
 module.exports = router;

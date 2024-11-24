@@ -121,10 +121,43 @@ const switchRoleAdmin = async (req, res) => {
   }
 };
 
+const agregarPedidoAHistorial = async (req, res) => {
+  try {
+    const { usuarioId, pedidoId } = req.body;
+
+    // Verificar que ambos IDs están presentes
+    if (!usuarioId || !pedidoId) {
+      return res.status(400).json({
+        error: "Faltan datos necesarios (usuarioId o pedidoId).",
+      });
+    }
+
+    // Buscar el usuario y agregar el pedido al historial
+    const usuario = await User.findById(usuarioId);
+    if (!usuario) {
+      return res.status(404).json({ error: "Usuario no encontrado." });
+    }
+
+    usuario.historialPedidos.push(pedidoId);
+    await usuario.save();
+
+    res.status(200).json({
+      message: "Pedido agregado al historial con éxito.",
+      historialPedidos: usuario.historialPedidos,
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: "Hubo un error al agregar el pedido al historial.",
+      details: error.message,
+    });
+  }
+};
+
 module.exports = {
   getUsers,
   getUserById,
   updateUser,
   deleteUser,
   switchRoleAdmin,
+  agregarPedidoAHistorial,
 };

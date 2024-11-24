@@ -24,7 +24,16 @@ const crearPedido = async (req, res) => {
     });
 
     await pedido.save();
-    res.status(201).json(pedido);
+
+    // Incluir el ID en la respuesta junto con otros datos
+    res.status(201).json({
+      id: pedido._id,
+      sushis: pedido.sushis,
+      total: pedido.total,
+      cliente: pedido.cliente,
+      estado: pedido.estado, // Si tienes un campo 'estado' en tu modelo
+      creadoEn: pedido.createdAt, // Si tienes timestamps habilitados
+    });
   } catch (error) {
     res.status(500).json({
       error: "Hubo un error al crear el pedido",

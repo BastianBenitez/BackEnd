@@ -4,11 +4,11 @@ const VentaController = require("../controllers/VentaController");
 
 const router = express.Router();
 
-router.get("/reporte-ventas", VentaController.reporteVentas);
-router.get("/pedidos-por-estado", VentaController.pedidosPorEstado);
+router.get("/reporte-ventas", VentaController.reporteVentasTotalesPorMes);
 router.get(
   "/cantidad-ventas-por-sushi",
   VentaController.cantidadVentasPorSushi
 );
+router.get("/pedidos-sushi-per-month", VentaController.getSushiSalesByMonth);
 
 module.exports = router;

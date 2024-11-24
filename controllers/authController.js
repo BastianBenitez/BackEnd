@@ -49,7 +49,11 @@ const loginUser = async (req, res) => {
   const token = jwt.sign(
     {
       id: user._id,
+      nombre: user.nombre,
+      apellido: user.apellido,
       email: user.email,
+      telefono: user.telefono,
+      direccion: user.direccion,
       isAdmin: user.isAdmin,
       isOwner: user.isOwner,
     },

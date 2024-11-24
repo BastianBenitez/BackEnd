@@ -37,19 +37,39 @@ const getUserById = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
-  const { id } = req.params;
-  const { nombre, email, password } = req.body;
   try {
-    const user = await User.findByIdAndUpdate(
-      id,
-      { nombre, email, password, updatedAt: Date.now() },
-      { new: true }
-    );
-    if (!user)
+    const { id } = req.params; // Obtener el ID del usuario desde los parámetros de la URL
+    const { nombre, apellido, email, telefono, direccion, contrasena } =
+      req.body; // Obtener los datos enviados desde el frontend
+
+    // Validar si el usuario existe
+    const user = await User.findById(id);
+    if (!user) {
       return res.status(404).json({ message: "Usuario no encontrado" });
-    res.json(user);
+    }
+
+    // Actualizar los campos proporcionados
+    if (nombre) user.nombre = nombre;
+    if (apellido) user.apellido = apellido;
+    if (email) user.email = email;
+    if (telefono) user.telefono = telefono;
+    if (direccion) user.direccion = direccion;
+
+    // Si se envía una nueva contraseña, actualizarla (asegúrate de encriptarla si es necesario)
+    if (contrasena) {
+      const bcrypt = require("bcryptjs");
+      const salt = await bcrypt.genSalt(10);
+      user.contrasena = await bcrypt.hash(contrasena, salt);
+    }
+
+    // Guardar los cambios en la base de datos
+    const updatedUser = await user.save();
+
+    // Responder con el usuario actualizado
+    res.status(200).json(updatedUser);
   } catch (error) {
-    res.status(400).json({ message: "Error al actualizar el usuario" });
+    console.error("Error al actualizar el usuario:", error);
+    res.status(500).json({ message: "Error del servidor" });
   }
 };
 

@@ -2,57 +2,6 @@
 const Pedido = require("../models/Pedido");
 const Sushi = require("../models/Sushi");
 
-// Controlador para obtener el reporte de ventas por tipo de sushi
-const reporteVentasPorMes = async (req, res) => {
-  const { mes, ano } = req.query; // Mes y año como parámetros de consulta
-
-  try {
-    // Definir el inicio y fin del mes
-    const fechaInicio = new Date(`${ano}-${mes}-01`);
-    const fechaFin = new Date(`${ano}-${parseInt(mes) + 1}-01`);
-    fechaFin.setDate(fechaFin.getDate() - 1); // El último día del mes
-
-    // Realizar la agregación de los pedidos
-    const reporte = await Pedido.aggregate([
-      {
-        $match: {
-          fecha: { $gte: fechaInicio, $lte: fechaFin }, // Filtrar por fecha
-        },
-      },
-      { $unwind: "$sushis" }, // Descomponer los sushis de cada pedido
-      {
-        $group: {
-          _id: "$sushis.sushi", // Agrupar por ID de sushi
-          totalVentas: { $sum: { $multiply: ["$sushis.cantidad", "$total"] } }, // Total de ventas por tipo
-          cantidadVendida: { $sum: "$sushis.cantidad" }, // Cantidad total vendida
-        },
-      },
-      {
-        $lookup: {
-          from: "sushis", // Colección de sushis
-          localField: "_id",
-          foreignField: "_id",
-          as: "sushiInfo",
-        },
-      },
-      { $unwind: "$sushiInfo" }, // Unir la información del sushi
-      {
-        $project: {
-          tipoSushi: "$sushiInfo.nombre", // Nombre del sushi
-          totalVentas: 1,
-          cantidadVendida: 1,
-        },
-      },
-    ]);
-
-    // Responder con los datos del reporte
-    res.json(reporte);
-  } catch (error) {
-    console.error("Error al generar el reporte:", error);
-    res.status(500).send("Error al generar el reporte");
-  }
-};
-
 const obtenerVetasShushoPorMes = async (req, res) => {
   try {
     const { ano, mes } = req.query;
@@ -230,7 +179,6 @@ const reporteVentasTotalesPorMes = async (req, res) => {
 };
 
 module.exports = {
-  reporteVentasPorMes,
   obtenerVetasShushoPorMes,
   cantidadVentasPorSushi,
   reporteVentasTotalesPorMes,

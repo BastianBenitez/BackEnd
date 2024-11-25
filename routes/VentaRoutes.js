@@ -9,6 +9,9 @@ router.get(
   "/cantidad-ventas-por-sushi",
   VentaController.cantidadVentasPorSushi
 );
-router.get("/pedidos-sushi-per-month", VentaController.getSushiSalesByMonth);
+router.get(
+  "/pedidos-sushi-per-month",
+  VentaController.obtenerVetasShushoPorMes
+);
 
 module.exports = router;

@@ -53,7 +53,7 @@ const reporteVentasPorMes = async (req, res) => {
   }
 };
 
-const getSushiSalesByMonth = async (req, res) => {
+const obtenerVetasShushoPorMes = async (req, res) => {
   try {
     const { ano, mes } = req.query;
 
@@ -231,7 +231,7 @@ const reporteVentasTotalesPorMes = async (req, res) => {
 
 module.exports = {
   reporteVentasPorMes,
-  getSushiSalesByMonth,
+  obtenerVetasShushoPorMes,
   cantidadVentasPorSushi,
   reporteVentasTotalesPorMes,
 };

@@ -1,7 +1,7 @@
 // controllers/userController.js
 const User = require("../models/Usuario"); // Asegúrate de importar el modelo
 
-const getUsers = async (req, res) => {
+const obtenerUsuarios = async (req, res) => {
   try {
     const users = await User.find(); // Obtener todos los usuarios de la base de datos
 
@@ -24,7 +24,7 @@ const getUsers = async (req, res) => {
   }
 };
 
-const getUserById = async (req, res) => {
+const obterUsuarioPorId = async (req, res) => {
   const { id } = req.params;
   try {
     const user = await User.findById(id);
@@ -36,7 +36,7 @@ const getUserById = async (req, res) => {
   }
 };
 
-const updateUser = async (req, res) => {
+const actualizarUsuarios = async (req, res) => {
   try {
     const { id } = req.params; // Obtener el ID del usuario desde los parámetros de la URL
     const { nombre, apellido, email, telefono, direccion, contrasena } =
@@ -73,7 +73,7 @@ const updateUser = async (req, res) => {
   }
 };
 
-const deleteUser = async (req, res) => {
+const eliminarUsuario = async (req, res) => {
   const { id } = req.params;
   try {
     const user = await User.findByIdAndDelete(id);
@@ -86,7 +86,7 @@ const deleteUser = async (req, res) => {
 };
 
 // Controller to toggle admin privileges (switch between true/false)
-const switchRoleAdmin = async (req, res) => {
+const cambiarRolAdmin = async (req, res) => {
   try {
     const userId = req.params.id;
     const { isAdmin } = req.body; // Recibir el valor de isAdmin desde el cuerpo de la solicitud
@@ -154,10 +154,10 @@ const agregarPedidoAHistorial = async (req, res) => {
 };
 
 module.exports = {
-  getUsers,
-  getUserById,
-  updateUser,
-  deleteUser,
-  switchRoleAdmin,
+  obtenerUsuarios,
+  obterUsuarioPorId,
+  actualizarUsuarios,
+  eliminarUsuario,
+  cambiarRolAdmin,
   agregarPedidoAHistorial,
 };

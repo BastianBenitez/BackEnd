@@ -2,8 +2,7 @@
 const Usuario = require("../models/Usuario");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-
-const SECRET_KEY = "tu_clave_secreta";
+require("dotenv").config();
 
 // Registro de nuevo usuario
 const registerUser = async (req, res) => {
@@ -57,7 +56,7 @@ const loginUser = async (req, res) => {
       isAdmin: user.isAdmin,
       isOwner: user.isOwner,
     },
-    SECRET_KEY,
+    process.env.SECRET_KEY,
     {
       expiresIn: "1h",
     }

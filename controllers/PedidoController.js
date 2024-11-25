@@ -1,5 +1,6 @@
 const Pedido = require("../models/Pedido");
 const Sushi = require("../models/Sushi");
+const User = require("../models/Usuario");
 
 // Crear un nuevo pedido
 const crearPedido = async (req, res) => {
@@ -183,6 +184,41 @@ const getOrderDetails = async (req, res) => {
   }
 };
 
+const obtenerHistorialPedidos = async (req, res) => {
+  try {
+    // Obtener el usuarioId desde los parámetros de la solicitud
+    const { usuarioId } = req.params;
+
+    // Verificar que el usuarioId es válido
+    if (!usuarioId) {
+      return res.status(400).json({ error: "El usuarioId es obligatorio." });
+    }
+
+    // Buscar al usuario y obtener su historial de pedidos
+    const usuario = await User.findById(usuarioId).populate({
+      path: "historialPedidos", // Buscar los pedidos en el historial
+      populate: {
+        path: "sushis.sushi", // Asegurar que se obtienen los detalles de los sushis
+        model: "Sushi", // Poblamos los detalles del sushi con el modelo Sushi
+      },
+    });
+
+    // Si no se encuentra al usuario, retornar error
+    if (!usuario) {
+      return res.status(404).json({ error: "Usuario no encontrado." });
+    }
+
+    // El historial de pedidos ya está poblado con los detalles de los sushis
+    res.status(200).json(usuario.historialPedidos);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "Hubo un error al recuperar el historial de pedidos.",
+      details: error.message,
+    });
+  }
+};
+
 module.exports = {
   crearPedido,
   obtenerPedidos,
@@ -191,4 +227,5 @@ module.exports = {
   eliminarPedido,
   cancelOrder,
   getOrderDetails,
+  obtenerHistorialPedidos,
 };

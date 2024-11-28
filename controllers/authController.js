@@ -6,29 +6,55 @@ require("dotenv").config();
 
 // Registro de nuevo usuario
 const registerUser = async (req, res) => {
-  const { nombre, apellido, email, telefono, direccion, contrasena } = req.body;
+  try {
+    const { nombre, apellido, email, telefono, direccion, contrasena } =
+      req.body;
 
-  const existingUser = await Usuario.findOne({ email });
-  if (existingUser) {
-    return res.status(400).json({ message: "El usuario ya existe" });
+    // Validar campos requeridos
+    if (!email || !contrasena || !nombre || !apellido) {
+      return res.status(400).json({ message: "Faltan campos requeridos" });
+    }
+
+    // Verificar si el usuario existe
+    const existingUser = await Usuario.findOne({ email }).lean();
+    if (existingUser) {
+      return res.status(400).json({ message: "El usuario ya existe" });
+    }
+
+    // Validaciones
+    if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+      return res.status(400).json({ message: "Formato de email inválido" });
+    }
+
+    if (contrasena.length < 8) {
+      return res
+        .status(400)
+        .json({ message: "La contraseña debe tener al menos 8 caracteres" });
+    }
+
+    // Sanitización y preparación de datos
+    const userData = {
+      nombre: nombre.trim(),
+      apellido: apellido.trim(),
+      email: email.toLowerCase().trim(),
+      telefono: telefono?.trim(),
+      direccion: direccion?.trim(),
+      isAdmin: false,
+      isOwner: false,
+    };
+
+    // Encriptar contraseña
+    const salt = await bcrypt.genSalt(12);
+    userData.contrasena = await bcrypt.hash(contrasena, salt);
+
+    // Crear usuario
+    await Usuario.create(userData);
+
+    return res.status(201).json({ message: "Usuario creado exitosamente" });
+  } catch (error) {
+    console.error("Error al registrar usuario:", error);
+    return res.status(500).json({ message: "Error al crear el usuario" });
   }
-
-  const hashedPassword = await bcrypt.hash(contrasena, 10);
-
-  const newUser = new Usuario({
-    nombre,
-    apellido,
-    email,
-    telefono,
-    direccion,
-    contrasena: hashedPassword,
-    isAdmin: false,
-    isowner: false,
-  });
-
-  await newUser.save();
-
-  res.status(201).json({ message: "Usuario creado exitosamente" });
 };
 
 const loginUser = async (req, res) => {
